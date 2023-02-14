@@ -20,19 +20,21 @@ while True:
     tabs = safari.windows.first.tabs()  # fetch latest tabs
     for keyword in keywords:
         for tab in tabs:
-            if tab.exists() and keyword in tab.URL():
+            if tab.exists() and keyword in tab.URL().lower():
                 tab.close()
 
     # Check for user input (non-blocking)
     ready, _, _ = select.select([sys.stdin], [], [], 0)
     if ready:
-        wait_for_delay = False  # don't wait for delay if user entered a command
+        
+        
         command = input("")
+       
         if command == "exit":
             print("Exiting...")
             break
         elif command == "append": # Add a keyword to the list, if n
-            listApp = input("Append the keyword: ")
+            listApp = input("Append the keyword: ").lower()
             if listApp == "":
                 printy()
                 continue
@@ -44,7 +46,7 @@ while True:
         elif command == "remove": # Remove a keyword from the list
             print(keywords)
             print(" ")
-            listRem = input("Remove the keyword: ")
+            listRem = input("Remove the keyword: ").lower()
             if listRem == "":
                 continue
             elif listRem in keywords:
@@ -60,7 +62,5 @@ while True:
             print("Invalid command")
             print(" ")
             printy()
-    else:
-        if wait_for_delay and not any(command == x for x in ['exit', 'append', 'remove', 'list']):
-            time.sleep(3)  # wait for 3 seconds before checking Safari tabs again
-        wait_for_delay = True  # reset the flag so that we wait for delay next time
+    
+    time.sleep(1)  # wait for 1 second before checking Safari tabs again
