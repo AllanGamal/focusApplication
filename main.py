@@ -8,28 +8,77 @@ keywords = ["twitter", "facebook", "reddit", "youtube", "instagram", "tumblr", "
 print("Enter 'append', 'remove', 'list' or 'exit': ")
 def printy():
     print("Enter 'append', 'remove', 'list' or 'exit': ")
+    
+def selectBrowser():
+    browser = None
+    browserInput = input("Which browser do you want to use? (Safari/Chrome/Firefox): ").lower()
+    if browserInput == "safari": 
+        browser = appscript.app("Safari")
+    elif browserInput == "chrome":
+        browser = appscript.app("Google Chrome")
+    elif browserInput == "firefox":
+        browser = appscript.app("Firefox")
+    else:
+        print("Invalid browser")
+    return browser
 
-wait_for_delay = True  # start by waiting for the 3s delay
 command = ''  
 
+browser = selectBrowser()
+commandPromptPrinted = False
+prevWindowCount = 0
+
 while True:
-    # check if safari is running
-    while not safari.isrunning():
+    # check if browser is available
+    if not browser:
+        print("Browser not available, exiting...")
+        break
+    
+    lastMessageTime = 0  # initialize last message time to 0
+
+    # check if browser is running
+    while not browser.isrunning():
+        currentTime = time.time()
+        if currentTime - lastMessageTime >= 15:
+            print("Browser is not running, please start it")
+            lastMessageTime = currentTime
         time.sleep(3)
+
+    # check if browser has at least one window
+    
+        
+
+    # check if browser has at least one window
+    windowCount = browser.windows.count()
+    if windowCount == 0:
+        currentTime = time.time()
+        if currentTime - lastMessageTime >= 15:
+            print("No windows/tabs found, please open a window")
+            lastMessageTime = currentTime
+        time.sleep(3)
+        prevWindowCount = 0
+        commandPromptPrinted = True  # reset the flag
+    elif windowCount != prevWindowCount:
+        prevWindowCount = windowCount
+        commandPromptPrinted = False  # reset the flag
+
+    # print command prompt if not already printed
+    if not commandPromptPrinted:
+        printy()
+        commandPromptPrinted = True
+
     # Check tabs for keywords
-    tabs = safari.windows.first.tabs()  # fetch latest tabs
-    for keyword in keywords:
-        for tab in tabs:
-            if tab.exists() and keyword in tab.URL().lower():
-                tab.close()
+    if browser.windows.count() > 0 and browser.windows.first.tabs.count() > 0:
+        tabs = browser.windows.first.tabs()  # fetch latest tabs
+        for keyword in keywords:
+            for tab in tabs:
+                if tab.exists() and keyword in tab.URL().lower():
+                    tab.close()
 
     # Check for user input (non-blocking)
     ready, _, _ = select.select([sys.stdin], [], [], 0)
     if ready:
-        
-        
         command = input("")
-       
         if command == "exit":
             print("Exiting...")
             break
@@ -63,4 +112,4 @@ while True:
             print(" ")
             printy()
     
-    time.sleep(1)  # wait for 1 second before checking Safari tabs again
+    time.sleep(0.5)  # wait
