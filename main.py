@@ -8,7 +8,7 @@ keywords = ["twitter", "facebook", "reddit", "youtube", "instagram", "tumblr", "
 print("Enter 'append', 'remove', 'list' or 'exit': ")
 def printy():
     print("Enter 'append', 'remove', 'list' or 'exit': ")
-    
+
 def selectBrowser():
     browser = None
     browserInput = input("Which browser do you want to use? (Safari/Chrome/Firefox): ").lower()
@@ -45,6 +45,7 @@ while True:
         time.sleep(3)
 
     # check if browser has at least one window
+    
     
         
 
