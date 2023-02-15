@@ -2,7 +2,8 @@
 Application that automatically check and shuts down any site with a specific keyword in the URL. I.e "twitter"...
 # Allan Gamal
 
-<img src="/img/focusGif.gif" >
+
+<img src="/img/focusGif.gif">
 
 <h2>How to use</h2>
 
