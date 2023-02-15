@@ -72,13 +72,13 @@ while True:
     if browser.windows.count() > 0 and browser.windows.first.tabs.count() > 0:
         tabs = browser.windows.first.tabs()  # fetch latest tabs
         for keyword in keywords:
+            if not isinstance(keyword, str):
+                print("Error: keyword is not a string")
+                continue
             for tab in tabs:
-                if tab.exists():
-                    try:
-                        if keyword.lower() in tab.URL().lower():
-                            tab.close()
-                    except UnicodeEncodeError:
-                        print("Error: UnicodeEncodeError occurred while checking tab URL")
+                if tab.exists() and isinstance(tab.URL(), str) and keyword.lower() in tab.URL().lower():
+                    tab.close()
+
 
     # Check for user input (non-blocking)
     ready, _, _ = select.select([sys.stdin], [], [], 0)
