@@ -27,7 +27,7 @@ Application that automatically check and shuts down any site with a specific key
 
 
 
-<h3>Append the keyword</h3>
+<h3>Append a keyword</h3>
 <img src="/img/append.png" >
 
 <p>
