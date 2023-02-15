@@ -1,4 +1,4 @@
-# focusApplication
+# focusMate
 Application that automatically check and shuts down any site with a specific keyword in the URL. I.e "twitter"...
 # Allan Gamal
 
