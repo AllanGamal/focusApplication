@@ -4,7 +4,7 @@ import select
 import sys
 
 safari = appscript.app("Safari")
-keywords = ["twitter", "facebook", "reddit", "youtube", "instagram", "tumblr", "pinterest", "imgur", "9gag"]
+keywords = []
 print("Enter 'append', 'remove', 'list' or 'exit': ")
 def printy():
     print("Enter 'append', 'remove', 'list' or 'exit': ")
@@ -73,8 +73,12 @@ while True:
         tabs = browser.windows.first.tabs()  # fetch latest tabs
         for keyword in keywords:
             for tab in tabs:
-                if tab.exists() and keyword in tab.URL().lower():
-                    tab.close()
+                if tab.exists():
+                    try:
+                        if keyword.lower() in tab.URL().lower():
+                            tab.close()
+                    except UnicodeEncodeError:
+                        print("Error: UnicodeEncodeError occurred while checking tab URL")
 
     # Check for user input (non-blocking)
     ready, _, _ = select.select([sys.stdin], [], [], 0)
